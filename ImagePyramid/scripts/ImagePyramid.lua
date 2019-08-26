@@ -28,19 +28,15 @@ local DELAY = 1000 -- ms between visualization steps
 
 -- Creating viewer
 local viewer = View.create()
-viewer:setID('viewer2D')
 
 -- Settin up graphical overlay attributes
 local textDec1 = View.TextDecoration.create() -- Level
-local text1Position = {20, 40}
-local text1Size = 35
+textDec1:setSize(35)
+textDec1:setPosition(20, 40)
 
 local textDec2 = View.TextDecoration.create() -- Image size
-local text2Position = {20, 105}
-local text2Size = 25
-
-local textDecoration = View.ShapeDecoration.create()
-textDecoration:setLineColor(0, 0, 230)
+textDec2:setSize(25)
+textDec2:setPosition(20, 105)
 
 --End of Global Scope-----------------------------------------------------------
 
@@ -48,22 +44,19 @@ textDecoration:setLineColor(0, 0, 230)
 
 local function main()
   local img = Image.load('resources/ImagePyramid.bmp')
+
   local downsamplingLevels = 5
   local imgPyramid = Image.Pyramid.create(img, downsamplingLevels)
+
   for i = 0, downsamplingLevels - 1 do
     local downsampledImage = imgPyramid:getImage(i)
+    local width, height = downsampledImage:getSize()
+
+    -- Displaying pyramid level with scaled text (to fit image size)
     viewer:clear()
     local imageID = viewer:addImage(downsampledImage)
-    -- Writing pyramid level with scaled text (to fit image size)
-    textDec1:setSize(text1Size / (1 ^ i))
-    textDec1:setPosition(text1Position[1] / (1 ^ i), text1Position[2] / (1 ^ i))
     viewer:addText('Level: ' .. i, textDec1, nil, imageID)
-
-    local width, height = downsampledImage:getSize()
-    textDec2:setSize(text2Size / (1 ^ i))
-    textDec2:setPosition(text2Position[1] / (1 ^ i), text2Position[2] / (1 ^ i))
     viewer:addText(width .. 'x' .. height, textDec2, nil, imageID)
-
     viewer:present()
     print('Pyramid level ' .. i .. ', width: ' .. width .. ', height: ' .. height)
     Script.sleep(DELAY)
