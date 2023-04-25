@@ -6,16 +6,13 @@ print('AppEngine Version: ' .. Engine.getVersion())
 local DELAY = 1000 -- ms between visualization steps
 
 -- Creating viewer
-local viewer = View.create("viewer2D1")
+local viewer = View.create()
 
 -- Settin up graphical overlay attributes
-local textDec1 = View.TextDecoration.create() -- Level
-textDec1:setSize(35)
-textDec1:setPosition(20, 40)
-
-local textDec2 = View.TextDecoration.create() -- Image size
-textDec2:setSize(25)
-textDec2:setPosition(20, 105)
+-- Level:
+local textDec1 = View.TextDecoration.create():setSize(35):setPosition(20, 40)
+--Image size:
+local textDec2 = View.TextDecoration.create():setSize(25):setPosition(20, 105)
 
 --End of Global Scope-----------------------------------------------------------
 
@@ -33,9 +30,9 @@ local function main()
 
     -- Displaying pyramid level with scaled text (to fit image size)
     viewer:clear()
-    local imageID = viewer:addImage(downsampledImage)
-    viewer:addText('Level: ' .. i, textDec1, nil, imageID)
-    viewer:addText(width .. 'x' .. height, textDec2, nil, imageID)
+    viewer:addImage(downsampledImage)
+    viewer:addText('Level: ' .. i, textDec1)
+    viewer:addText(width .. 'x' .. height, textDec2)
     viewer:present()
     print('Pyramid level ' .. i .. ', width: ' .. width .. ', height: ' .. height)
     Script.sleep(DELAY)
